@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import Logo from './logo';
 
 const Navbar = () => {
@@ -19,7 +19,7 @@ const Navbar = () => {
         <li><a>Item 3</a></li>
       </ul>
     </div>
-    <a className="btn btn-ghost"><Logo></Logo></a>
+    <Link className="btn btn-ghost"><Logo></Logo></Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -27,8 +27,9 @@ const Navbar = () => {
       <li><a>Item 3</a></li>
     </ul>
   </div>
-  <div className="navbar-end">
-    <a className="btn">Button</a>
+  <div className="navbar-end gap-4">
+   <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
+        <Link to="/register" className="btn btn-sm btn-primary">Register</Link>
   </div>
 </div>
     );
