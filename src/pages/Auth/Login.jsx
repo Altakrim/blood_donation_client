@@ -1,37 +1,92 @@
-import React from 'react';
-import { Link } from 'react-router';
+
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebase.config";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    console.log(email, password);
+    setError("");
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const result = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+// user email পাঠাচ্ছো
+axios.post("http://localhost:5000/jwt", { email: user.email })
+  .then(res => {
+    localStorage.setItem("access-token", res.data.token);
+  });
+      const user = result.user;
+      console.log("Logged in user:", user);
+
+      const res = await fetch("http://localhost:5000/jwt", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({email: user.email}),
+
+        
+      });
+      const data = await res.json();
+
+      localStorage.setItem("access-token", data.token);
+         
+      // later: JWT generate here
+      navigate("/");
+
+    } catch (err) {
+      setError(err.message);
+    }
   };
+
   return (
     <div className="hero bg-base-200 min-h-screen">
-  <div className="hero-content flex-col lg:flex-row-reverse">
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-       <h1 className="text-3xl font-bold text-center pt-5">Login now!</h1>
-      <div className="card-body">
-        <form onSubmit={handleLogin} className="fieldset">
-          {/* Email field */}
+      <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
+        <h1 className="text-3xl font-bold text-center p-5">Login</h1>
+
+        <form onSubmit={handleLogin} className="card-body">
           <label className="label">Email</label>
-          <input type="email" name='email' className="input" placeholder="Email" />
-          {/* password field  */}
+          <input
+            type="email"
+            name="email"
+            className="input input-bordered"
+            required
+          />
+
           <label className="label">Password</label>
-          <input type="password" name='password' className="input" placeholder="Password" />
-          <div><a className="link link-hover">Forgot password?</a></div>
+          <input
+            type="password"
+            name="password"
+            className="input input-bordered"
+            required
+          />
+
+          {error && <p className="text-red-500">{error}</p>}
+
           <button className="btn btn-neutral mt-4">Login</button>
         </form>
-        <div>
-              <p><span>Already have an account?</span><Link className="hover:underline pl-1 text-secondary" to={'/register'}>Register</Link></p>
-            </div>
+
+        <p className="text-center pb-4">
+          New here?
+          <Link to="/register" className="text-secondary pl-1">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
-  </div>
-</div>
   );
 };
 
