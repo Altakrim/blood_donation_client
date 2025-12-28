@@ -1,9 +1,25 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import Logo from './logo';
+import useAuth from '../hooks/useAuth';
 
 const Navbar = () => {
+   const {user, logOut} = useAuth();
+   const navigate = useNavigate();
+
+   const handleLogout = () => {
+    logOut()
+    .then(() => {
+      navigate("/login");
+    })
+    .catch(err => console.log(err));
+   }
    
+   const navLinks = <>
+     <li>{user && <Link to="/profile">Profile</Link>}</li>
+      <li>{user && <Link to="/edit-profile">Edit Profile</Link>}</li>
+       
+        <li><a>Item 3</a></li></>
     return (
         <div className="navbar bg-base-100 shadow-sm">
   <div className="navbar-start">
@@ -14,22 +30,26 @@ const Navbar = () => {
       <ul
         tabIndex="-1"
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Item 1</a></li>
-       
-        <li><a>Item 3</a></li>
+        {navLinks}
       </ul>
     </div>
     <Link className="btn btn-ghost"><Logo></Logo></Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
-      <li><a>Item 1</a></li>
-      <li><a>Item 3</a></li>
+     {navLinks}
     </ul>
   </div>
   <div className="navbar-end gap-4">
-   <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
+    {user ? (
+      <button className='btn btn-outline btn-sm' onClick={handleLogout}>LogOut</button>
+    ) : (
+       <>
+        <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
         <Link to="/register" className="btn btn-sm btn-primary">Register</Link>
+       </>
+    )}
+  
   </div>
 </div>
     );

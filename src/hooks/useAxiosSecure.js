@@ -12,6 +12,10 @@ axiosSecure.interceptors.request.use((config) => {
   }
 
   return config;
-});
+}, error => Promise.reject(error));
 
-export default axiosSecure;
+const useAxiosSecure = () => {
+    return axiosSecure;
+};
+
+export default useAxiosSecure;
