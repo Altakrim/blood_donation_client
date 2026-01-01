@@ -1,18 +1,11 @@
-import Lottie from "react-lottie";
-import loadingAnimation from "../../assets/json/loading.json";
 
 const Loading = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-5">
-      <div className="max-w-sm relative">
-        <Lottie
-          options={{
-            animationData: loadingAnimation,
-            autoplay: true,
-            loop: true,
-          }}
-        ></Lottie>
-      </div>
+     <div className="min-h-screen flex flex-col items-center justify-center bg-red-50">
+      <span className="loading loading-spinner loading-lg text-red-600"></span>
+      <p className="mt-4 text-lg font-semibold text-red-700">
+        Loading, please wait...
+      </p>
     </div>
   );
 };

@@ -1,17 +1,16 @@
-import React from 'react';
-import { Navigate } from 'react-router';
-import useRole from '../hooks/useRole';
+import { Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const VolunteerRoute = ({ children }) => {
-    const {role, roleLoading} = useRole();
+  const { user, role, loading } = useAuth();
 
-    if(roleLoading) {
-        return <span className='loading loading-spinner loading-xl items-center'></span>;
-    }
-    if(role !== "volunteer"){
-        return <Navigate to="/" replace />;
-    }
+  if (loading) return null;
+
+  if (user && role === "volunteer") {
     return children;
+  }
+
+  return <Navigate to="/" />;
 };
 
 export default VolunteerRoute;
