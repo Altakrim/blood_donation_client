@@ -14,11 +14,13 @@ import CreateDonationRequest from "../pages/Donor/CreateDonationRequest";
 import MyDonationRequests from "../pages/Donor/MyDonationRequests";
 import UpdateDonationRequest from "../pages/Donor/UpdateDonationRequest";
 import AdminRouter from "./AdminRouter";
-import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AllUsers from "../pages/Admin/AllUsers";
 import ErrorPage from "../pages/ErrorPage";
-import VolunteerRoute from "./VolunteerRoute";
-import VolunteerRequests from "../pages/volunteer/VolunteerRequests";
+import DonationRequests from "../pages/DonationRequests";
+import SearchDonors from "../pages/public/SearchDonors";
+import DonationRequestDetails from "../pages/DonationRequestDetails";
+import AdminDashboard from "../pages/Dashboard/AdminDashboard";
+import ManageUsers from "../pages/Dashboard/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -26,23 +28,11 @@ export const router = createBrowserRouter([
     Component: MainLayout,
     errorElement: <ErrorPage />,
     children: [
-      // {
-      //   path: "/profile",
-      //   element: <PrivateRoute><Profile /></PrivateRoute>,
-      // },
-      // {
-      //   path: "/edit-profile",
-      //   element: <PrivateRoute><EditProfile /></PrivateRoute>
-      // },
-      // {
-      //   path:"/dashboard",
-      //   element:<PrivateRoute><DashboardLayout /></PrivateRoute>
-      // },
       {
         path: "/",
         Component: Home,
       },
-      {
+       {
         path: "/register",
         Component: Register,
       },
@@ -50,14 +40,25 @@ export const router = createBrowserRouter([
         path: "/login",
         Component: Login,
       },
+
       {
-        path: "/volunteer/requests",
-        element: (
-          <VolunteerRoute>
-            <VolunteerRequests />
-          </VolunteerRoute>
-        ),
+        path: '/search',
+        Component: SearchDonors
       },
+      {
+        path: "/donation-requests",
+        Component: DonationRequests
+      },
+      {
+        path: "/donation-requests/:id",
+        element:(
+          <PrivateRoute>
+            <DonationRequestDetails />
+          </PrivateRoute>
+        )
+      },
+      
+     
 
       {
         path: "/dashboard",
@@ -67,6 +68,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
+          {
+            path: "admin",
+            element: <AdminDashboard />
+          },
+          {
+            path: "/dashboard/users",
+            element: <AdminRouter><ManageUsers /></AdminRouter>
+          },
           {
             path: "create-request",
             element: (
@@ -108,81 +117,30 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/donors",
-            element: <SearchDonors />,
-          },
-          {
-            path: "/pending-requests",
-            element: <PendingRequests />,
-          },
-          {
-            path: "/donation/:id",
-            element: <DonationDetails />,
-          },
+       path:"/dashboard/admin",
+       element: (
+        <PrivateRoute>
+          <AdminRouter>
+            <AdminDashboard />
+          </AdminRouter>
+        </PrivateRoute>
+       )
+      },
+     
+          // {
+          //   path: "/donors",
+          //   element: <SearchDonors />,
+          // },
+          // {
+          //   path: "/pending-requests",
+          //   element: <PendingRequests />,
+          // },
+          // {
+          //   path: "/donation/:id",
+          //   element: <DonationDetails />,
+          // },
         ],
       },
     ],
   },
 ]);
-
-// import { createBrowserRouter } from "react-router-dom";
-// import MainLayout from "../layouts/MainLayout";
-// import DashboardLayout from "../layouts/DashboardLayout";
-
-// import Home from "../pages/Home";
-// import Login from "../pages/Login";
-// import Register from "../pages/Register";
-
-// import PrivateRoute from "./PrivateRoute";
-// import DonorRoute from "./DonorRoute";
-
-// import CreateDonationRequest from "../pages/Donor/CreateDonationRequest";
-// import MyDonationRequests from "../pages/Donor/MyDonationRequests";
-// import UpdateDonationRequest from "../pages/Donor/UpdateDonationRequest";
-
-// export const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <MainLayout />,
-//     children: [
-//       { path: "/", element: <Home /> },
-//       { path: "/login", element: <Login /> },
-//       { path: "/register", element: <Register /> },
-//     ],
-//   },
-
-//   {
-//     path: "/dashboard",
-//     element: (
-//       <PrivateRoute>
-//         <DashboardLayout />
-//       </PrivateRoute>
-//     ),
-//     children: [
-//       {
-//         path: "create-request",
-//         element: (
-//           <DonorRoute>
-//             <CreateDonationRequest />
-//           </DonorRoute>
-//         ),
-//       },
-//       {
-//         path: "my-requests",
-//         element: (
-//           <DonorRoute>
-//             <MyDonationRequests />
-//           </DonorRoute>
-//         ),
-//       },
-//       {
-//         path: "edit-request/:id",
-//         element: (
-//           <DonorRoute>
-//             <UpdateDonationRequest />
-//           </DonorRoute>
-//         ),
-//       },
-//     ],
-//   },
-// ]);

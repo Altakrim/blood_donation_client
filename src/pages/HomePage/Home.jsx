@@ -1,18 +1,18 @@
-import React from 'react';
-import logoImg from "../../assets/blood_logo.png";
-
+import React from "react";
+import Banner from "../../components/Banner";
+import Featured from "../../components/Featured";
+import ContactUs from "../../components/ContactUs";
+// import logoImg from "../../assets/blood_logo.png";
 
 const Home = () => {
-    return (
-        <div className="text-center">
-      <h1 className="text-5xl font-bold text-red-600">
-        Welcome to Blood Donation App
-      </h1>
-      <p className="mt-4 max-w-2/3 mx-auto">
-        <img src={logoImg} alt="" />
-      </p>
+  return (
+    <div className="text-center">
+      
+      <Banner />
+      <Featured />
+      <ContactUs />
     </div>
-    );
+  );
 };
 
 export default Home;
